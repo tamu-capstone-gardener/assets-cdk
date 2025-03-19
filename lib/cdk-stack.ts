@@ -1,16 +1,23 @@
-import * as cdk from 'aws-cdk-lib';
+import { Stack, StackProps, Aws } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { Distribution } from 'aws-cdk-lib/aws-cloudfront'
+import { S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 
-export class CdkStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+export class CdkStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const assetsBucket = new Bucket(this, 'assetsBucket', {
+      bucketName: `general-bucket-${Aws.ACCOUNT_ID}-${Aws.REGION}`,
+      encryption: BucketEncryption.S3_MANAGED,
+      publicReadAccess: false
+    })
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'CdkQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const distribution = new Distribution(this, 'distribution', {
+      defaultBehavior: {
+        origin: S3BucketOrigin.withOriginAccessControl(assetsBucket)
+      }
+    })
   }
 }
