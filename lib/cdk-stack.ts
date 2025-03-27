@@ -3,6 +3,7 @@ import { Construct } from 'constructs';
 import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { Distribution } from 'aws-cdk-lib/aws-cloudfront'
 import { S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
+import { ARecord, HostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53';
 
 export class CdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -18,6 +19,15 @@ export class CdkStack extends Stack {
       defaultBehavior: {
         origin: S3BucketOrigin.withOriginAccessControl(assetsBucket)
       }
+    })
+
+    const zone = HostedZone.fromLookup(this, 'MainHostedZone', {
+      domainName: 'planthub.academy'
+    });
+
+    const record = new ARecord(this, 'lightsailRecord', {
+      target: RecordTarget.fromIpAddresses('3.128.124.156'), // this is lightsail instance public IP 
+      zone
     })
   }
 }
