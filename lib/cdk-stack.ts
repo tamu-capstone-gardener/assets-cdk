@@ -15,12 +15,6 @@ export class CdkStack extends Stack {
       publicReadAccess: false
     })
 
-    const distribution = new Distribution(this, 'distribution', {
-      defaultBehavior: {
-        origin: S3BucketOrigin.withOriginAccessControl(assetsBucket)
-      }
-    })
-
     const zone = HostedZone.fromLookup(this, 'MainHostedZone', {
       domainName: 'planthub.academy'
     });
