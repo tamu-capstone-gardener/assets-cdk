@@ -1,8 +1,6 @@
 import { Stack, StackProps, Aws } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
-import { Distribution } from 'aws-cdk-lib/aws-cloudfront'
-import { S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import { ARecord, HostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53';
 
 export class CdkStack extends Stack {
@@ -20,7 +18,7 @@ export class CdkStack extends Stack {
     });
 
     const record = new ARecord(this, 'lightsailRecord', {
-      target: RecordTarget.fromIpAddresses('3.128.124.156'), // this is lightsail instance public IP 
+      target: RecordTarget.fromIpAddresses('3.12.230.208'), // this is lightsail instance public IP 
       zone
     })
   }
