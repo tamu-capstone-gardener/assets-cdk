@@ -27,5 +27,11 @@ export class CdkStack extends Stack {
       zone,
       domainName: 'tamu-capstone-gardener.github.io',
     })
+
+    new CnameRecord(this, 'coverageRecord', {
+      recordName: 'server-test-coverage',
+      zone,
+      domainName: 'tamu-capstone-gardener.github.io'
+    })
   }
 }
